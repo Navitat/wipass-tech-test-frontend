@@ -1,8 +1,19 @@
 import Link from "next/link";
 
 const getTickets = async () => {
-  const res = await fetch("http://localhost:8000/tickets");
-  return res.json();
+  try {
+    const res = await fetch("http://localhost:8000/tickets");
+
+    if (!res.ok) {
+      throw new Error(`HTTP Error status: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.log("Error fetching tickets", err);
+
+    return null;
+  }
 };
 
 export default async function Home() {
@@ -21,28 +32,34 @@ export default async function Home() {
           </Link>
         </div>
         <div className="mt-6">
-          <table className="table-auto min-w-screen text-center">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>E-mail</th>
-                <th>Description</th>
-                <th>Priority</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tickets.map((ticket, i) => {
-                return (
-                  <tr key={i}>
-                    <td>{ticket.client}</td>
-                    <td>{ticket.email}</td>
-                    <td>{ticket.description}</td>
-                    <td>{ticket.priority}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          {tickets === null ? (
+            <p className="text-center text-red-500 font-semibold">
+              Server error: unable to fetch tickets.
+            </p>
+          ) : (
+            <table className="table-auto min-w-screen text-center">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>E-mail</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tickets.map((ticket, i) => {
+                  return (
+                    <tr key={i}>
+                      <td>{ticket.client}</td>
+                      <td>{ticket.email}</td>
+                      <td>{ticket.description}</td>
+                      <td>{ticket.priority}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
       </main>
     </div>
