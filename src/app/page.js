@@ -20,14 +20,29 @@ export default async function Home() {
             Submit new ticket
           </Link>
         </div>
-        <div className="mt-6 grid gap-4">
-          {tickets.map((ticket, i) => {
-            return (
-              <div key={i} className="p-4 bg-gray-900 rounded-md shadow-sm">
-                {ticket.client}
-              </div>
-            );
-          })}
+        <div className="mt-6">
+          <table className="table-auto min-w-screen text-center">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>E-mail</th>
+                <th>Description</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tickets.map((ticket, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{ticket.client}</td>
+                    <td>{ticket.email}</td>
+                    <td>{ticket.description}</td>
+                    <td>{ticket.priority}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </main>
     </div>
